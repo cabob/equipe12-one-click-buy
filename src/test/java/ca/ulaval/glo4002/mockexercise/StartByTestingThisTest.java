@@ -19,18 +19,34 @@ public class StartByTestingThisTest {
 
     @BeforeEach
     public void setUp() {
-        service = new StartByTestingThis();
+
+        cartFactory = mock(CartFactory.class);
+
         repository = mock(ProductRepository.class);
         when(repository.findBySku("sku")).thenReturn(produit);
 
-        cartFactory = mock(CartFactory.class);
+        service = new StartByTestingThis(cartFactory, repository);
     }
 
     @Test
-    public void cartFactoryEstApppeleAvecBonEmail() {
+    public void verifierCreationCartFactory() {
         service.oneClickBuy(EMAIL, SKU);
 
         verify(cartFactory, times(1)).create(EMAIL);
+    }
+
+    @Test
+    public void verifierTrouveProduct(){
+        service.oneClickBuy(EMAIL, SKU);
+
+        verify(repository, times(1)).findBySku(SKU);
+    }
+
+    @Test
+    public void verifierAjoutProduct(){
+        service.oneClickBuy(EMAIL, SKU);
+
+        verify(repository, times(1)).findBySku(SKU);
     }
 
     @Test
