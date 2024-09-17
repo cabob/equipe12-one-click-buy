@@ -1,7 +1,10 @@
 package ca.ulaval.glo4002.mockexercise;
 
+import java.util.ArrayList;
+import java.util.List;
 import ca.ulaval.glo4002.mockexercise.do_not_edit.CartFactory;
 import ca.ulaval.glo4002.mockexercise.do_not_edit.Invoice;
+import ca.ulaval.glo4002.mockexercise.do_not_edit.InvoiceLine;
 import ca.ulaval.glo4002.mockexercise.do_not_edit.ProductRepository;
 
 public class StartByTestingThis {
@@ -20,8 +23,13 @@ public class StartByTestingThis {
         // Étape 3 : Ajouter le produit au cart
         cart.addProduct(product);
         // Étape 4 : Pour chaque item du cart, ajouter une ligne sur l'invoice
-
+        List<Product> products = cart.getProducts();
+        List <InvoiceLine> invoiceLines = new ArrayList<>();
+        for(Product p : products) {
+            invoiceLines.add(new InvoiceLine(p.getName(), p.getPrice()));
+        }
         // Étape 5 : Retourner l'invoice
-        return null;
+        return new Invoice(clientEmail, invoiceLines);
+
     }
 }

@@ -28,6 +28,7 @@ public class StartByTestingThisTest {
 
         repository = mock(ProductRepository.class);
         cart = mock(Cart.class);
+        when(cartFactory.create(EMAIL)).thenReturn(cart);
         invoiceLine = mock(InvoiceLine.class);
         when(repository.findBySku("sku")).thenReturn(produit);
 
@@ -50,8 +51,6 @@ public class StartByTestingThisTest {
 
     @Test
     public void verifierAjoutProduct(){
-        when(cartFactory.create(EMAIL)).thenReturn(cart);
-
         service.oneClickBuy(EMAIL, SKU);
 
         verify(cart, times(1)).addProduct(produit);
