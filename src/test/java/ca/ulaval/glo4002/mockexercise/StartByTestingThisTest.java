@@ -2,6 +2,7 @@ package ca.ulaval.glo4002.mockexercise;
 
 import ca.ulaval.glo4002.mockexercise.do_not_edit.CartFactory;
 import ca.ulaval.glo4002.mockexercise.do_not_edit.Invoice;
+import ca.ulaval.glo4002.mockexercise.do_not_edit.InvoiceLine;
 import ca.ulaval.glo4002.mockexercise.do_not_edit.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,9 @@ public class StartByTestingThisTest {
     private StartByTestingThis service;
     private ProductRepository repository;
     private CartFactory cartFactory;
+    private InvoiceLine invoiceLine;
+
+    private Cart cart;
 
     @BeforeEach
     public void setUp() {
@@ -23,6 +27,8 @@ public class StartByTestingThisTest {
         cartFactory = mock(CartFactory.class);
 
         repository = mock(ProductRepository.class);
+        cart = mock(Cart.class);
+        invoiceLine = mock(InvoiceLine.class);
         when(repository.findBySku("sku")).thenReturn(produit);
 
         service = new StartByTestingThis(cartFactory, repository);
@@ -44,15 +50,17 @@ public class StartByTestingThisTest {
 
     @Test
     public void verifierAjoutProduct(){
+        when(cartFactory.create(EMAIL)).thenReturn(cart);
+
         service.oneClickBuy(EMAIL, SKU);
 
-        verify(repository, times(1)).findBySku(SKU);
+        verify(cart, times(1)).addProduct(produit);
     }
 
     @Test
-    public void ajoutNouveauProduitCreePanierEtRetourneFacture() {
+    public void verifierLignesInvoice() {
         Invoice invoice = service.oneClickBuy(EMAIL, SKU);
 
-
+        assert(invoice.getClass()).equals(Invoice.class);
     }
 }
